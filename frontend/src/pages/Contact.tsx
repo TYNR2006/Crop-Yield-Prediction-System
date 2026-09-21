@@ -53,7 +53,7 @@ const Contact = () => {
           Get In <span className="bg-gradient-primary bg-clip-text text-transparent">Touch</span>
         </h1>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-          Have questions about crop optimization or need support? We're here to help you succeed.
+          Have questions about setup, datasets, or the prediction/advisory APIs? Reach out for project support.
         </p>
       </div>
 
@@ -189,7 +189,7 @@ const Contact = () => {
           {[
             {
               question: "How accurate are the yield predictions?",
-              answer: "Our AI models achieve 95% accuracy by analyzing multiple data points including soil conditions, weather patterns, and historical data."
+              answer: "Use `ml_models/scripts/train_and_evaluate.py` to generate MAE, RMSE, and R² from the repository datasets. We avoid fixed accuracy claims."
             },
             {
               question: "What crops are supported?",
@@ -197,7 +197,7 @@ const Contact = () => {
             },
             {
               question: "Is soil testing required?",
-              answer: "Soil testing is optional but recommended for more accurate predictions. You can also manually input soil parameters."
+              answer: "Soil testing files are not parsed yet. Enter the supported API input fields manually in the prediction form."
             },
             {
               question: "How often should I use the prediction tool?",

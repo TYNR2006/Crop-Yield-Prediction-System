@@ -20,12 +20,12 @@ const Features = () => {
       icon: <TrendingUp className="h-12 w-12" />,
       title: "Multi-Step Prediction",
       description: "Comprehensive 6-step process that captures all crucial factors affecting crop yield including soil conditions, climate data, and farming practices.",
-      benefits: ["Accurate yield forecasting", "Risk assessment", "Seasonal planning", "Resource optimization"]
+      benefits: ["Model-based yield estimation", "Risk assessment", "Seasonal planning", "Resource optimization"]
     },
     {
       icon: <Leaf className="h-12 w-12" />,
       title: "Crop Optimization",
-      description: "AI-powered recommendations for crop selection, rotation strategies, and farming techniques to maximize yield and soil health.",
+      description: "Optional advisory chat for crop planning guidance (separate from deterministic prediction endpoint).",
       benefits: ["Intelligent crop rotation", "Soil health improvement", "Pest reduction", "Sustainable farming"]
     },
     {
@@ -59,8 +59,7 @@ const Features = () => {
           Powerful <span className="bg-gradient-primary bg-clip-text text-transparent">Features</span>
         </h1>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-          Discover how CropOptim's advanced features can transform your farming operations 
-          and maximize your crop yields through intelligent technology.
+          Explore how the project provides transparent prediction inputs, model outputs, and optional advisory guidance.
         </p>
         <Link to="/predict">
           <Button size="lg" className="bg-gradient-primary shadow-soft">
@@ -143,7 +142,7 @@ const Features = () => {
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-4">How It Works</h2>
           <p className="text-lg text-muted-foreground">
-            Simple steps to get your crop optimization plan
+            Simple steps to generate a prediction and optional advisory notes
           </p>
         </div>
 
@@ -157,12 +156,12 @@ const Features = () => {
             {
               step: "02", 
               title: "AI Analysis",
-              description: "Our advanced AI algorithms analyze your data along with weather patterns, soil health, and historical yield information."
+              description: "A fitted preprocessing + model pipeline processes your provided inputs and generates a deterministic estimate."
             },
             {
               step: "03",
               title: "Get Recommendations",
-              description: "Receive personalized crop optimization plans with yield predictions and actionable farming recommendations."
+              description: "Receive a prediction response from `/api/v1/predict` and optionally ask `/chat` for advisory suggestions."
             }
           ].map((step, index) => (
             <div key={index} className="text-center">
