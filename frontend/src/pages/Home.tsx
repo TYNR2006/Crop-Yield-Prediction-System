@@ -12,14 +12,13 @@ const Home = () => {
           <div className="text-center animate-fade-in">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
               <span className="bg-gradient-hero bg-clip-text text-transparent">
-                AI-Powered Crop
+                Crop
               </span>
               <br />
               <span className="text-foreground">Yield Prediction</span>
             </h1>
             <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-              Optimize your farming with intelligent crop yield predictions, soil analysis, 
-              and data-driven recommendations for sustainable agriculture.
+              Use deterministic model-based yield estimates and optional AI advisory guidance for Kadapa-focused crop planning.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/predict">
@@ -49,7 +48,7 @@ const Home = () => {
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-4">Why Choose CropOptim?</h2>
           <p className="text-lg text-muted-foreground">
-            Advanced AI technology meets traditional farming wisdom
+            Transparent model outputs with optional advisory support
           </p>
         </div>
         
@@ -58,7 +57,7 @@ const Home = () => {
             {
               icon: <TrendingUp className="h-8 w-8" />,
               title: "Yield Prediction",
-              description: "Accurate crop yield forecasting using AI models"
+              description: "Deterministic crop-yield estimates from trained scikit-learn pipelines"
             },
             {
               icon: <Leaf className="h-8 w-8" />,
@@ -96,7 +95,7 @@ const Home = () => {
         <div className="max-w-4xl mx-auto px-8 py-16 text-center">
           <h2 className="text-3xl font-bold mb-4">Ready to Optimize Your Crops?</h2>
           <p className="text-lg text-muted-foreground mb-8">
-            Join thousands of farmers who have improved their yield with CropOptim
+            Evaluate your own scenario using the available Kadapa dataset features
           </p>
           <Link to="/predict">
             <Button size="lg" className="bg-gradient-primary shadow-soft">

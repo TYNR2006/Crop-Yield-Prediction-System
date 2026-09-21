@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { sendQueryToBackend } from "../api/api"; // Make sure api.js exists
+import { sendAdvisoryRequest } from "../api/api";
 
 const ChatBox = ({ formData }) => {
   const [messages, setMessages] = useState([]);
@@ -9,8 +9,8 @@ const ChatBox = ({ formData }) => {
     if (!input) return;
     setMessages([...messages, { sender: "user", text: input }]);
 
-    const res = await sendQueryToBackend(input);
-    setMessages((prev) => [...prev, { sender: "bot", text: res.reply }]);
+    const res = await sendAdvisoryRequest(input);
+    setMessages((prev) => [...prev, { sender: "bot", text: res.advisory }]);
 
     setInput("");
   };

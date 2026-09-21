@@ -10,7 +10,7 @@ const About = () => {
           About <span className="bg-gradient-primary bg-clip-text text-transparent">CropOptim</span>
         </h1>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-          Empowering farmers with AI-driven insights to maximize crop yields and promote sustainable agriculture.
+          A student project focused on transparent crop-yield estimation for Kadapa datasets, with optional advisory chat support.
         </p>
       </section>
 
@@ -23,8 +23,7 @@ const About = () => {
             </div>
             <h2 className="text-2xl font-bold mb-4">Our Mission</h2>
             <p className="text-muted-foreground leading-relaxed">
-              To revolutionize agriculture by providing farmers with cutting-edge AI technology that predicts crop yields, 
-              optimizes farming practices, and promotes sustainable agricultural methods for a better future.
+              To provide a reproducible and honest crop-yield estimation workflow that separates measured predictions from advisory LLM responses.
             </p>
           </CardContent>
         </Card>
@@ -48,7 +47,7 @@ const About = () => {
         <div className="text-center">
           <h2 className="text-3xl font-bold mb-4">What We Do</h2>
           <p className="text-lg text-muted-foreground">
-            CropOptim combines advanced AI algorithms with agricultural expertise
+            CropOptim combines deterministic model inference with optional AI advisory text
           </p>
         </div>
 
@@ -56,7 +55,7 @@ const About = () => {
           {[
             {
               title: "AI-Powered Predictions",
-              description: "Our machine learning models analyze multiple data points including soil conditions, weather patterns, and historical yield data to provide accurate crop yield predictions."
+              description: "Prediction uses dataset-aligned features (rainfall, temperature, soil type, fertilizer, pesticide, year) and published evaluation scripts."
             },
             {
               title: "Soil Health Analysis",
@@ -100,10 +99,10 @@ const About = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {[
-            { icon: <Users className="h-8 w-8" />, number: "10,000+", label: "Farmers Helped" },
-            { icon: <Award className="h-8 w-8" />, number: "25%", label: "Average Yield Increase" },
-            { icon: <Globe className="h-8 w-8" />, number: "50+", label: "Districts Covered" },
-            { icon: <Target className="h-8 w-8" />, number: "95%", label: "Prediction Accuracy" }
+            { icon: <Users className="h-8 w-8" />, number: "3", label: "Crops Supported" },
+            { icon: <Award className="h-8 w-8" />, number: "100", label: "Rows per Crop Dataset" },
+            { icon: <Globe className="h-8 w-8" />, number: "1", label: "District Focus (Kadapa)" },
+            { icon: <Target className="h-8 w-8" />, number: "Reproducible", label: "Evaluation Workflow" }
           ].map((stat, index) => (
             <div key={index} className="text-center">
               <div className="w-16 h-16 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-4">
