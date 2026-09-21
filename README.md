@@ -1,616 +1,217 @@
-# 🌾 Crop Yield Prediction System
+# Crop Yield Prediction System
 
-An end-to-end machine learning application designed to predict crop yield using agricultural and environmental data. The system combines a frontend interface, backend services, crop-specific datasets, trained machine learning models, and prediction-related processing into a unified application.
+A full-stack academic project that combines a React + TypeScript frontend with a Flask backend for an AI-assisted crop advisory chat flow.
 
-The project focuses on providing a simple interface through which users can work with crop-related information and obtain data-driven yield predictions.
-
-> **Project Status:** Active development
+> **Current implementation note:** the backend currently exposes a chat-style advisory response (`/chat`) powered by OpenRouter (`z-ai/glm-4.5-air:free`) and query logging. While the repository contains ML-related scripts and model artifacts under `ml_models/`, the active Flask API in `backend/app.py` is currently an AI-chat workflow, not a validated end-to-end yield-accuracy service with published evaluation metrics.
 
 ---
 
-## 📌 Overview
+## Portfolio Snapshot
 
-Agricultural yield is influenced by multiple factors such as crop type, environmental conditions, soil characteristics, and other agricultural parameters.
-
-Traditional yield estimation can be difficult because these factors interact with each other and vary across locations and crops.
-
-This project explores the use of **machine learning and agricultural datasets** to build a crop-yield prediction system capable of processing crop-specific data and generating yield-related predictions through an application interface.
-
-The system is organized into separate frontend, backend, data, and machine-learning components to support an end-to-end workflow.
+- **Frontend:** React, TypeScript, Vite, Tailwind CSS, shadcn/ui-style components
+- **Backend:** Flask + Flask-CORS
+- **AI Integration:** OpenRouter Chat Completions API with GLM model (`z-ai/glm-4.5-air:free`)
+- **Data/ML Assets Present:** CSV datasets in `data/`, training/prediction scripts in `ml_models/`
+- **Logging:** CSV query logging via `backend/query_logger.py`
 
 ---
 
-## 🎯 Objectives
-
-* Develop a machine-learning-based crop yield prediction system.
-* Process crop-specific agricultural datasets.
-* Support multiple crop categories.
-* Provide a user-friendly frontend for interacting with the system.
-* Connect the frontend with backend prediction services.
-* Organize trained ML models separately from application logic.
-* Maintain prediction/query logs for application-level tracking.
-* Create an extensible architecture for adding additional crops and models.
-
----
-
-## 🌱 Supported Crops
-
-The current project contains crop-specific datasets for:
-
-* 🌾 **Paddy**
-* 🥜 **Groundnut**
-* 🌾 **Millets**
-
-The corresponding datasets are stored inside the `data/` directory.
+## Current Architecture
 
 ```text
-data/
-├── groundnut_kadapa.csv
-├── millets_kadapa.csv
-└── paddy_kadapa.csv
+Browser (React/Vite)
+   |
+   | POST /chat (JSON)
+   v
+Flask API (backend/app.py)
+   |- CORS enabled for cross-origin frontend requests
+   |- query_glm() -> OpenRouter chat completion API
+   |- query_logger.log_query() -> backend/query_logs.csv
+   v
+JSON response to frontend
 ```
 
-The datasets are associated with the **Kadapa** region and are used as part of the agricultural prediction workflow.
+### Implemented API endpoints
+
+- `GET /` -> health/status text response
+- `POST /chat` -> sends user query to OpenRouter GLM model, logs query/response, returns JSON
+
+`backend/app.py` also defines a `GET /logs` handler, but the current implementation is incomplete (missing imports) and should be treated as non-production until fixed.
 
 ---
 
-## 🧠 Machine Learning Component
-
-The project contains a dedicated `ml_models/` directory for the machine-learning models used by the application.
-
-The general prediction workflow is:
-
-```text
-Agricultural Input Data
-        │
-        ▼
-Data Processing
-        │
-        ▼
-Feature Preparation
-        │
-        ▼
-Machine Learning Model
-        │
-        ▼
-Crop Yield Prediction
-        │
-        ▼
-Backend Response
-        │
-        ▼
-Frontend Display
-```
-
-The separation of the ML models from the backend and frontend allows the prediction component to be maintained independently from the user interface.
-
----
-
-## 🏗️ System Architecture
-
-```text
-                         ┌─────────────────────┐
-                         │       User          │
-                         └──────────┬──────────┘
-                                    │
-                                    ▼
-                         ┌─────────────────────┐
-                         │      Frontend       │
-                         │                     │
-                         │ User Input / UI     │
-                         └──────────┬──────────┘
-                                    │
-                                    ▼
-                         ┌─────────────────────┐
-                         │      Backend        │
-                         │                     │
-                         │ API / Application   │
-                         │ Logic               │
-                         └──────────┬──────────┘
-                                    │
-                         ┌──────────┴──────────┐
-                         │                     │
-                         ▼                     ▼
-                ┌─────────────────┐   ┌─────────────────┐
-                │   ML Models     │   │  Agricultural   │
-                │                 │   │     Data        │
-                └────────┬────────┘   └────────┬────────┘
-                         │                     │
-                         └──────────┬──────────┘
-                                    ▼
-                         ┌─────────────────────┐
-                         │  Yield Prediction   │
-                         └──────────┬──────────┘
-                                    │
-                                    ▼
-                         ┌─────────────────────┐
-                         │ Frontend Result     │
-                         └─────────────────────┘
-```
-
----
-
-## 🖥️ Frontend
-
-The project contains a dedicated `frontend/` application.
-
-The frontend is responsible for providing the user-facing interface and communicating with the backend services.
-
-The frontend project contains:
-
-```text
-frontend/
-├── public/
-├── src/
-├── index.html
-├── package.json
-├── package-lock.json
-├── vite.config.ts
-├── tsconfig.json
-├── tailwind.config.ts
-└── ...
-```
-
-The frontend is organized as a modern web application and separates UI components from the backend prediction logic.
-
----
-
-## ⚙️ Backend
-
-The backend is located inside the `backend/` directory.
-
-```text
-backend/
-├── app.py
-├── query_logger.py
-├── query_logs.csv
-└── logs/
-```
-
-### Backend responsibilities
-
-* Handle application requests.
-* Connect the frontend with the prediction functionality.
-* Process prediction-related requests.
-* Work with the machine-learning component.
-* Maintain application/query logs.
-
-The backend also contains a dedicated query-logging component for recording application interactions.
-
----
-
-## 📊 Query Logging
-
-The project contains:
-
-```text
-backend/query_logger.py
-backend/query_logs.csv
-backend/logs/
-```
-
-The query logger provides an application-level mechanism for tracking prediction-related queries.
-
-This can be useful for:
-
-* Monitoring application usage.
-* Debugging.
-* Reviewing previous requests.
-* Analysing prediction interactions.
-* Supporting future improvements to the system.
-
----
-
-## 📁 Project Structure
+## Repository Structure
 
 ```text
 Crop-Yield-Prediction-System/
-│
 ├── backend/
-│   ├── __pycache__/
-│   ├── logs/
 │   ├── app.py
 │   ├── query_logger.py
-│   └── query_logs.csv
-│
+│   ├── query_logs.csv
+│   └── logs/
 ├── data/
 │   ├── groundnut_kadapa.csv
 │   ├── millets_kadapa.csv
 │   └── paddy_kadapa.csv
-│
 ├── frontend/
-│   ├── public/
 │   ├── src/
-│   ├── .gitignore
-│   ├── bun.lockb
-│   ├── components.json
-│   ├── eslint.config.js
-│   ├── index.html
 │   ├── package.json
-│   ├── package-lock.json
-│   ├── postcss.config.js
-│   ├── README.md
-│   ├── tailwind.config.ts
-│   ├── tsconfig.app.json
-│   ├── tsconfig.json
-│   ├── tsconfig.node.json
 │   └── vite.config.ts
-│
 ├── ml_models/
-│   └── ...
-│
-├── scripts/
-│   └── ...
-│
-└── README.md
+│   ├── glm_model.py
+│   ├── train_ensemble.py
+│   ├── predict_with_ensemble.py
+│   └── models/
+└── scripts/
 ```
 
 ---
 
-## 🛠️ Technologies
+## Setup
 
-### Frontend
-
-* React
-* TypeScript
-* Vite
-* Tailwind CSS
-
-### Backend
-
-* Python
-* Python-based backend application
-
-### Machine Learning
-
-* Machine Learning
-* Agricultural data processing
-* Crop-specific predictive models
-
-### Data
-
-* CSV datasets
-* Pandas/data processing workflow
-
-### Development Tools
-
-* Git
-* GitHub
-* VS Code
-
-> The exact ML algorithms and evaluation metrics should be documented here after the model implementation and evaluation results are finalized.
-
----
-
-## 🔄 Application Workflow
-
-The system follows an end-to-end workflow:
-
-### 1. User Interaction
-
-The user interacts with the frontend and provides the required agricultural information.
-
-### 2. Request Processing
-
-The frontend sends the required information to the backend.
-
-### 3. Data Preparation
-
-The backend processes the incoming information into the format required by the prediction component.
-
-### 4. Crop Selection
-
-The system works with crop-specific agricultural data, including:
-
-* Paddy
-* Groundnut
-* Millets
-
-### 5. Machine Learning Prediction
-
-The appropriate model from the `ml_models/` component is used for the prediction workflow.
-
-### 6. Result Generation
-
-The prediction is returned to the application.
-
-### 7. Result Display
-
-The frontend presents the prediction to the user.
-
-### 8. Query Logging
-
-Relevant application interactions can be recorded through the query-logging component.
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-Make sure the following are installed:
-
-* Python 3.x
-* Node.js
-* npm
-* Git
-
----
-
-## 📥 Clone the Repository
+## 1) Clone
 
 ```bash
 git clone https://github.com/TYNR2006/Crop-Yield-Prediction-System.git
-```
-
-Navigate to the project:
-
-```bash
 cd Crop-Yield-Prediction-System
 ```
 
----
+## 2) Backend (Flask)
 
-## ⚙️ Backend Setup
-
-Navigate to the backend:
+From repository root:
 
 ```bash
 cd backend
-```
-
-Install the required Python dependencies according to the project's backend dependency configuration.
-
-Then run the backend application:
-
-```bash
+python -m venv .venv
+source .venv/bin/activate   # Windows: .venv\\Scripts\\activate
+pip install flask flask-cors requests
 python app.py
 ```
 
-> If your project uses a specific backend command or virtual environment configuration, update this section with the exact command before publishing the README.
+Default backend URL: `http://127.0.0.1:5000`
 
----
+## 3) Frontend (Vite)
 
-## 🖥️ Frontend Setup
-
-Open another terminal and navigate to:
+In another terminal:
 
 ```bash
 cd frontend
-```
-
-Install the frontend dependencies:
-
-```bash
 npm install
-```
-
-Start the development server:
-
-```bash
 npm run dev
 ```
 
-The frontend will then be available through the local development URL displayed by Vite.
+Default frontend dev URL (from `vite.config.ts`): `http://localhost:8080`
 
 ---
 
-## 📈 Prediction Workflow
+## Configuration & Environment Guidance
 
-A typical prediction flow can be represented as:
+### Backend secrets
+
+The backend currently uses a placeholder API key string inside source files (`backend/app.py`, `ml_models/glm_model.py`, `ml_models/predict_with_ensemble.py`).
+
+**Before any deployment:**
+
+1. Move API keys to environment variables (for example, `OPENROUTER_API_KEY`).
+2. Read them via `os.getenv(...)` in Python.
+3. Never commit real keys to Git.
+
+### Frontend API URL
+
+`frontend/src/api/api.js` currently calls `http://127.0.0.1:5000/chat` directly. For production readiness, move this to a configurable environment value (for example, `VITE_API_BASE_URL`).
+
+---
+
+## API Examples (Implemented Endpoints)
+
+## `GET /`
+
+```bash
+curl http://127.0.0.1:5000/
+```
+
+Example response:
 
 ```text
-User
- │
- ▼
-Select / Enter Agricultural Parameters
- │
- ▼
-Frontend
- │
- ▼
-Backend API
- │
- ▼
-Data Processing
- │
- ▼
-Crop-Specific ML Model
- │
- ▼
-Predicted Crop Yield
- │
- ▼
-Frontend Result
+✅ GLM-4.5 API is Running!
+```
+
+## `POST /chat`
+
+```bash
+curl -X POST http://127.0.0.1:5000/chat \
+  -H "Content-Type: application/json" \
+  -d '{"query":"Suggest steps to improve paddy yield in Kadapa"}'
+```
+
+Example response shape:
+
+```json
+{
+  "prediction": "<LLM-generated advisory response>",
+  "details": "<static details string from backend>",
+  "explanation": "<static explanation string from backend>"
+}
+```
+
+Error example (missing query):
+
+```json
+{
+  "error": "No query provided"
+}
 ```
 
 ---
 
-## 🌾 Dataset Organization
+## Frontend Behavior (Current)
 
-The current project contains three crop-specific datasets:
-
-### Paddy
-
-```text
-data/paddy_kadapa.csv
-```
-
-### Groundnut
-
-```text
-data/groundnut_kadapa.csv
-```
-
-### Millets
-
-```text
-data/millets_kadapa.csv
-```
-
-These datasets provide the agricultural information used within the crop-yield prediction workflow.
+- Multi-page React UI (`Home`, `About`, `Features`, `Predict`, `Contact`, `Results`)
+- `Predict` page triggers backend request through `sendPredictionRequest()`
+- Backend response is displayed in the prediction result card
+- `Results` page currently shows static placeholder analytics/recommendation data
 
 ---
 
-## 🔬 Machine Learning Development
+## Testing & Quality Status
 
-The `ml_models/` directory is intended to keep the predictive models separate from the application code.
+Current state in this repository:
 
-This separation provides several advantages:
-
-* Easier model maintenance.
-* Independent model updates.
-* Cleaner backend architecture.
-* Ability to add crop-specific models.
-* Easier experimentation with different ML approaches.
-
-The `scripts/` directory provides a separate location for supporting development and data/model-processing scripts.
+- No dedicated backend test suite/config is present in repository root or backend folder.
+- Frontend includes lint/build scripts in `frontend/package.json`.
+- Functional/API behavior should currently be verified via local manual runs (`python app.py`, `npm run dev`) and endpoint calls.
 
 ---
 
-## 📊 Model Evaluation
+## Limitations (Important)
 
-Model evaluation is an important part of the project.
-
-The final version of the project should report the actual evaluation metrics obtained during testing, such as:
-
-* R²
-* MAE
-* RMSE
-* MAPE
-
-> **Note:** No specific accuracy value is reported in this README because the exact evaluation metric and result have not been verified from the current project files.
-
-This avoids presenting an unsupported performance claim.
+- The live Flask API is currently an LLM-backed advisory chat endpoint, not a formally evaluated crop-yield prediction API with published MAE/RMSE/R² metrics.
+- Some frontend copy still markets broad optimization capabilities that are not fully backed by measured model outputs.
+- `/logs` endpoint is present in code but currently incomplete for reliable use.
+- Dataset scope is limited to included files (Kadapa-focused CSVs).
+- Hardcoded URLs/secrets reduce deployment readiness.
 
 ---
 
-## ✨ Key Features
+## Security Notes
 
-* 🌾 Crop-specific yield prediction
-* 🌱 Support for multiple agricultural datasets
-* 🧠 Machine-learning-based prediction workflow
-* 🖥️ Interactive frontend
-* ⚙️ Backend prediction service
-* 📊 Crop-specific data processing
-* 📝 Query logging
-* 🧩 Modular ML model organization
-* 🔧 Extensible project architecture
+- Replace placeholder keys with environment variables before deployment.
+- Do not commit credentials, tokens, or private endpoints.
+- Consider adding request validation/rate limiting before public exposure.
+- Keep dependency versions patched and review external API usage policies.
 
 ---
 
-## 🔮 Future Improvements
+## Suggested Next Improvements
 
-The system can be extended with:
-
-### Machine Learning
-
-* Hyperparameter optimization.
-* Model comparison.
-* Cross-validation.
-* Improved feature engineering.
-* Additional crop datasets.
-* More detailed model evaluation.
-* Improved prediction accuracy.
-* Model explainability.
-
-### Application
-
-* Cloud deployment.
-* User authentication.
-* Prediction history.
-* Interactive data visualization.
-* Downloadable prediction reports.
-* Mobile-friendly interface.
-
-### Agricultural Intelligence
-
-* Weather integration.
-* Soil-condition analysis.
-* Location-specific recommendations.
-* Historical yield analysis.
-* Crop recommendation.
-* Fertilizer recommendation.
-* Irrigation recommendations.
+1. Externalize backend keys and frontend API base URL via environment variables.
+2. Add backend tests (unit + API) and frontend integration tests.
+3. Align frontend messaging with actual backend behavior.
+4. If yield prediction is a target feature, expose model inference endpoints with documented schema.
+5. Publish verified evaluation metrics only after reproducible training/evaluation scripts are finalized.
 
 ---
 
-## ⚠️ Limitations
+## License
 
-* Model predictions depend on the quality and coverage of the available agricultural datasets.
-* Current datasets are associated with the Kadapa region.
-* The supported crop categories are currently limited to the available datasets.
-* Predictions should be interpreted as data-driven estimates rather than guaranteed agricultural outcomes.
-* Model performance may vary for agricultural conditions outside the training-data distribution.
-
----
-
-## 🧪 Development Status
-
-### Completed / Implemented
-
-* [x] Frontend application structure
-* [x] Backend application
-* [x] Agricultural datasets
-* [x] Crop-specific data organization
-* [x] ML model directory
-* [x] Prediction workflow
-* [x] Query logging
-* [x] Multi-component project architecture
-
-### Future Work
-
-* [ ] Expand agricultural datasets
-* [ ] Improve model evaluation
-* [ ] Add detailed performance metrics
-* [ ] Compare multiple ML algorithms
-* [ ] Improve model generalization
-* [ ] Add additional crops
-* [ ] Deploy the application
-* [ ] Add advanced agricultural recommendations
-
----
-
-## 🧑‍💻 Author
-
-**Yoganandha Reddy Thappeta**
-
-B.Tech — Computer Science and Engineering
-Artificial Intelligence & Machine Learning
-
-### Profiles
-
-* GitHub: https://github.com/TYNR2006
-* LinkedIn: Add your LinkedIn profile here
-
----
-
-## 📌 Project Summary
-
-**Crop Yield Prediction System** is an end-to-end agricultural machine-learning application that combines:
-
-```text
-Agricultural Data
-       ↓
-Data Processing
-       ↓
-Machine Learning
-       ↓
-Crop Yield Prediction
-       ↓
-Backend Services
-       ↓
-Frontend Interface
-       ↓
-User-Facing Results
-```
-
-The project demonstrates the integration of **machine learning, backend development, frontend development, agricultural datasets, and application-level logging** into a unified software system.
-
----
-
-## 📄 License
-
-This project is intended for educational and research purposes.
-
-Add an appropriate open-source license to this repository if you intend to make the code available for reuse.
+No explicit license file is currently present in the repository. Add one if you intend open-source reuse.
